@@ -9,16 +9,12 @@ type Vec3 struct {
 
 // NewVec3 creates and returns a new vector ptr with given values
 func NewVec3(e0, e1, e2 float64) *Vec3 {
-	var v1 Vec3
-	v1.e[0] = e0
-	v1.e[1] = e1
-	v1.e[2] = e2
-	return &v1
+	return &Vec3{e: [3]float64{e0, e1, e2}}
 }
 
 // Zeros creates all zero vector
 func Zeros() *Vec3 {
-	return NewVec3(0, 0, 0)
+	return &Vec3{}
 }
 
 // Ones creates all one vector
