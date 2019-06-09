@@ -3,7 +3,7 @@ package ray
 import "vector"
 
 // Color is a type alias of vector.Vec3
-type Color = vector.Vec3
+type Color struct{ vector.Vec3 }
 
 // R return the 1st channel of c
 func (c *Color) R() float64 {
