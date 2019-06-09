@@ -85,6 +85,7 @@ func Add(v1 *Vec3, vs ...*Vec3) *Vec3 {
 		e2 += v.Z()
 	}
 	sum := NewVec3(e0, e1, e2)
+	return sum
 }
 
 // Add use first argument as pivot vector, iterate to add rest of vectors
@@ -96,6 +97,7 @@ func (v1 *Vec3) Add(vs ...*Vec3) *Vec3 {
 		e2 += v.Z()
 	}
 	sum := NewVec3(e0, e1, e2)
+	return sum
 }
 
 // Sub use first argument as pivot vector, iterate to substract rest of vectors
@@ -106,7 +108,8 @@ func Sub(v1 *Vec3, vs ...*Vec3) *Vec3 {
 		e1 -= v.Y()
 		e2 -= v.Z()
 	}
-	sum := NewVec3(e0, e1, e2)
+	res := NewVec3(e0, e1, e2)
+	return res
 }
 
 // Sub use first argument as pivot vector, iterate to substract rest of vectors
@@ -117,7 +120,8 @@ func (v1 *Vec3) Sub(vs ...*Vec3) *Vec3 {
 		e1 -= v.Y()
 		e2 -= v.Z()
 	}
-	sum := NewVec3(e0, e1, e2)
+	res := NewVec3(e0, e1, e2)
+	return res
 }
 
 // Mut performs scalar multiplication on v1
