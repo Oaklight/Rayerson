@@ -52,22 +52,22 @@ func (v1 *Vec3) At(i int) float64 {
 
 // Length returns the (square root) length of v1
 func Length(v1 *Vec3) float64 {
-	return math.Sqrt(v1.X()*v1.X() + v1.Y() + v1.Y() + v1.Z()*v1.Z())
+	return math.Sqrt(v1.X()*v1.X() + v1.Y()*v1.Y() + v1.Z()*v1.Z())
 }
 
 // Length returns the (square root) length of v1
 func (v1 *Vec3) Length() float64 {
-	return math.Sqrt(v1.X()*v1.X() + v1.Y() + v1.Y() + v1.Z()*v1.Z())
+	return math.Sqrt(v1.X()*v1.X() + v1.Y()*v1.Y() + v1.Z()*v1.Z())
 }
 
 // SqrLength returns the squared length of v1
 func SqrLength(v1 *Vec3) float64 {
-	return v1.X()*v1.X() + v1.Y() + v1.Y() + v1.Z()*v1.Z()
+	return v1.X()*v1.X() + v1.Y()*v1.Y() + v1.Z()*v1.Z()
 }
 
 // SqrLength returns the squared length of v1
 func (v1 *Vec3) SqrLength() float64 {
-	return v1.X()*v1.X() + v1.Y() + v1.Y() + v1.Z()*v1.Z()
+	return v1.X()*v1.X() + v1.Y()*v1.Y() + v1.Z()*v1.Z()
 }
 
 // all the operation are provided in two fashions:
