@@ -15,5 +15,5 @@ func NewRay(a, b *vector.Vec3) *Ray {
 
 // PointAtScale returns a point of t times the given Ray r, along its direction
 func (r *Ray) PointAtScale(t float64) *vector.Vec3 {
-	return vector.Add(r.Origin, vector.Mut(r.Direct, t))
+	return vector.Add(r.Origin, vector.MulScalar(r.Direct, t))
 }

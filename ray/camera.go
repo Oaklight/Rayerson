@@ -12,7 +12,7 @@ type Camera struct {
 // NewCamera Creates the default orthogonal camera model
 func NewCamera() *Camera {
 	return &Camera{
-		origin:    vec3.Zeros(),
+		origin:    &vec3.Zeros,
 		lowerLeft: vec3.NewVec3(-2, -1, -1),
 		xAxis:     vec3.NewVec3(4, 0, 0),
 		yAxis:     vec3.NewVec3(0, 2, 0),
@@ -23,6 +23,11 @@ func NewCamera() *Camera {
 func (c *Camera) GetRay(u, v float64) *Ray {
 	return NewRay(
 		c.origin,
-		vec3.Add(c.lowerLeft, c.xAxis.Mut(u), c.yAxis.Mut(v)).Sub(c.origin),
+		vec3.Add(
+			c.lowerLeft,
+			c.xAxis.MulScalar(u),
+			c.yAxis.MulScalar(v),
+			c.origin.Negate(),
+		),
 	)
 }

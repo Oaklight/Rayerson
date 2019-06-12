@@ -23,9 +23,9 @@ func NewSphere(x, y, z, radius float64) *Sphere {
 // Hit a sphere could result in two hit spots, whichever first should win
 func (s *Sphere) Hit(r *ray.Ray, tMin, tMax float64) *Hit {
 	oc := r.Origin.Sub(s.Center)
-	a := r.Direct.SqrLength()
+	a := r.Direct.Dot(r.Direct)
 	b := vector.Dot(oc, r.Direct)
-	c := oc.SqrLength() - s.Radius*s.Radius
+	c := oc.Dot(oc) - s.Radius*s.Radius
 	delta := b*b - a*c
 
 	hit := &Hit{}
@@ -35,13 +35,13 @@ func (s *Sphere) Hit(r *ray.Ray, tMin, tMax float64) *Hit {
 		if temp := (-b - math.Sqrt(delta)) / a; temp < tMax && temp > tMin {
 			hit.T = temp
 			hit.Point = r.PointAtScale(temp)
-			hit.Normal = hit.Point.Sub(s.Center).Div(s.Radius)
+			hit.Normal = hit.Point.Sub(s.Center).DivScalar(s.Radius)
 			return hit
 		}
 		if temp := (-b + math.Sqrt(delta)) / a; temp < tMax && temp > tMin {
 			hit.T = temp
 			hit.Point = r.PointAtScale(temp)
-			hit.Normal = hit.Point.Sub(s.Center).Div(s.Radius)
+			hit.Normal = hit.Point.Sub(s.Center).DivScalar(s.Radius)
 			return hit
 		}
 	}

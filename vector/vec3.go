@@ -21,6 +21,11 @@ func NewVec3(e0, e1, e2 float64) *Vec3 {
 
 // =============================Vec3 Class methods=============================
 
+// Negate the given vector
+func (v1 *Vec3) Negate() *Vec3 {
+	return &Vec3{-v1.X, -v1.Y, -v1.Z}
+}
+
 // Length returns the (square root) length of v1
 func (v1 *Vec3) Length() float64 {
 	return math.Sqrt(v1.X*v1.X + v1.Y*v1.Y + v1.Z*v1.Z)
@@ -42,11 +47,26 @@ func (v1 *Vec3) Dot(v2 *Vec3) float64 {
 
 // Cross performs the cross product, v1 as the pivot vector
 func (v1 *Vec3) Cross(v2 *Vec3) *Vec3 {
-	return NewVec3(
-		v1.Y*v2.Z-v1.Z*v2.Y,
-		v1.Z*v2.X-v1.X*v2.Z,
-		v1.X*v2.Y-v1.Z*v2.X,
-	)
+	return &Vec3{
+		v1.Y*v2.Z - v1.Z*v2.Y,
+		v1.Z*v2.X - v1.X*v2.Z,
+		v1.X*v2.Y - v1.Z*v2.X,
+	}
+}
+
+// Normalize return the unit-length vector along v1 direction
+func (v1 *Vec3) Normalize() *Vec3 {
+	s := v1.Length()
+	return &Vec3{
+		v1.X / s,
+		v1.Y / s,
+		v1.Z / s,
+	}
+}
+
+// Abs returns the absoluted value of original vector
+func (v1 *Vec3) Abs() *Vec3 {
+	return &Vec3{math.Abs(v1.X), math.Abs(v1.Y), math.Abs(v1.Z)}
 }
 
 // using variadics to support multi-variable Add, Sub
@@ -59,8 +79,7 @@ func (v1 *Vec3) Add(vs ...*Vec3) *Vec3 {
 		e1 += v.Y
 		e2 += v.Z
 	}
-	sum := NewVec3(e0, e1, e2)
-	return sum
+	return &Vec3{e0, e1, e2}
 }
 
 // Sub use first argument as pivot vector, iterate to substract rest of vectors
@@ -71,39 +90,43 @@ func (v1 *Vec3) Sub(vs ...*Vec3) *Vec3 {
 		e1 -= v.Y
 		e2 -= v.Z
 	}
-	res := NewVec3(e0, e1, e2)
-	return res
+	return &Vec3{e0, e1, e2}
+}
+
+// Mul performs the element-wise multiplication of vectors
+func (v1 *Vec3) Mul(v2 *Vec3) *Vec3 {
+	return &Vec3{v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z}
+}
+
+// Div performs the element-wise division of vectors
+func (v1 *Vec3) Div(v2 *Vec3) *Vec3 {
+	return &Vec3{v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z}
 }
 
 // MulScalar performs scalar multiplication on v1
 func (v1 *Vec3) MulScalar(s float64) *Vec3 {
-	return NewVec3(
-		v1.X*s,
-		v1.Y*s,
-		v1.Z*s,
-	)
+	return &Vec3{
+		v1.X * s,
+		v1.Y * s,
+		v1.Z * s,
+	}
 }
 
 // DivScalar performs scalar division on v1
 func (v1 *Vec3) DivScalar(s float64) *Vec3 {
-	return NewVec3(
-		v1.X/s,
-		v1.Y/s,
-		v1.Z/s,
-	)
-}
-
-// Normalize return the unit-length vector along v1 direction
-func (v1 *Vec3) Normalize() *Vec3 {
-	return v1.DivScalar(v1.Length())
-}
-
-// Abs returns the absoluted value of original vector
-func (v1 *Vec3) Abs() *Vec3 {
-	return &Vec3{math.Abs(v1.X), math.Abs(v1.Y), math.Abs(v1.Z)}
+	return &Vec3{
+		v1.X / s,
+		v1.Y / s,
+		v1.Z / s,
+	}
 }
 
 // =============================General function===============================
+
+// Negate the given vector
+func Negate(v1 *Vec3) *Vec3 {
+	return v1.Negate()
+}
 
 // Length returns the (square root) length of v1
 func Length(v1 *Vec3) float64 {
@@ -125,6 +148,16 @@ func Cross(v1, v2 *Vec3) *Vec3 {
 	return v1.Cross(v2)
 }
 
+// Normalize return the unit-length vector along v1 direction
+func Normalize(v1 *Vec3) *Vec3 {
+	return v1.Normalize()
+}
+
+// Abs returns the absoluted value of original vector
+func Abs(v1 *Vec3) *Vec3 {
+	return v1.Abs()
+}
+
 // Add use first argument as pivot vector, iterate to add rest of vectors
 func Add(v1 *Vec3, vs ...*Vec3) *Vec3 {
 	return v1.Add(vs...)
@@ -135,6 +168,16 @@ func Sub(v1 *Vec3, vs ...*Vec3) *Vec3 {
 	return v1.Sub(vs...)
 }
 
+// Mul performs the element-wise multiplication of vectors
+func Mul(v1, v2 *Vec3) *Vec3 {
+	return v1.Mul(v2)
+}
+
+// Div performs the element-wise division of vectors
+func Div(v1, v2 *Vec3) *Vec3 {
+	return v1.Div(v2)
+}
+
 // MulScalar performs scalar multiplication on v1
 func MulScalar(v1 *Vec3, s float64) *Vec3 {
 	return v1.MulScalar(s)
@@ -143,14 +186,4 @@ func MulScalar(v1 *Vec3, s float64) *Vec3 {
 // DivScalar performs scalar division on v1
 func DivScalar(v1 *Vec3, s float64) *Vec3 {
 	return v1.DivScalar(s)
-}
-
-// Normalize return the unit-length vector along v1 direction
-func Normalize(v1 *Vec3) *Vec3 {
-	return v1.Normalize()
-}
-
-// Abs returns the absoluted value of original vector
-func Abs(v1 *Vec3) *Vec3 {
-	return v1.Abs()
 }
