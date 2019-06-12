@@ -17,17 +17,7 @@ func NewColor64(r, g, b float64) *Color64 {
 	return &Color64{r, g, b}
 }
 
-// Add use first argument as pivot vector, iterate to add rest of vectors
-func Add(c *Color64, vs ...*Color64) *Color64 {
-	e0, e1, e2 := c.R, c.G, c.B
-	for _, v := range vs {
-		e0 += v.R
-		e1 += v.G
-		e2 += v.B
-	}
-	sum := NewColor64(e0, e1, e2)
-	return sum
-}
+// =============================Vec3 Class methods=============================
 
 // Add use first argument as pivot vector, iterate to add rest of vectors
 func (c *Color64) Add(vs ...*Color64) *Color64 {
@@ -37,24 +27,40 @@ func (c *Color64) Add(vs ...*Color64) *Color64 {
 		e1 += v.G
 		e2 += v.B
 	}
-	sum := NewColor64(e0, e1, e2)
-	return sum
-}
-
-// DivScalar performs scalar division on c
-func DivScalar(c *Color64, s float64) *Color64 {
-	return NewColor64(
-		c.R/s,
-		c.G/s,
-		c.B/s,
-	)
+	return &Color64{e0, e1, e2}
 }
 
 // DivScalar performs scalar division on c
 func (c *Color64) DivScalar(s float64) *Color64 {
-	return NewColor64(
-		c.R/s,
-		c.G/s,
-		c.B/s,
-	)
+	return &Color64{
+		c.R / s,
+		c.G / s,
+		c.B / s,
+	}
+}
+
+// MulScalar performs scalar division on c
+func (c *Color64) MulScalar(s float64) *Color64 {
+	return &Color64{
+		c.R * s,
+		c.G * s,
+		c.B * s,
+	}
+}
+
+// =============================General function===============================
+
+// Add use first argument as pivot vector, iterate to add rest of vectors
+func Add(c *Color64, vs ...*Color64) *Color64 {
+	return c.Add(vs...)
+}
+
+// DivScalar performs scalar division on c
+func DivScalar(c *Color64, s float64) *Color64 {
+	return c.DivScalar(s)
+}
+
+// MulScalar performs scalar division on c
+func MulScalar(c *Color64, s float64) *Color64 {
+	return c.MulScalar(s)
 }

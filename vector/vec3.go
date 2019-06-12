@@ -2,6 +2,7 @@ package vector
 
 import (
 	"math"
+	"math/rand"
 )
 
 // Vec3 defines the 3-dimensional vector
@@ -17,6 +18,26 @@ var (
 // NewVec3 creates and returns a new vector ptr with given values
 func NewVec3(e0, e1, e2 float64) *Vec3 {
 	return &Vec3{e0, e1, e2}
+}
+
+// RandUnitVec3 generates random unit vector centered at origin
+func RandUnitVec3(rnd *rand.Rand) *Vec3 {
+	for {
+		var x, y, z float64
+		if rnd == nil {
+			x = rand.Float64()*2 - 1
+			y = rand.Float64()*2 - 1
+			z = rand.Float64()*2 - 1
+		} else {
+			x = rnd.Float64()*2 - 1
+			y = rnd.Float64()*2 - 1
+			z = rnd.Float64()*2 - 1
+		}
+		if x*x+y*y+z*z > 1 {
+			continue
+		}
+		return (&Vec3{x, y, z}).Normalize()
+	}
 }
 
 // =============================Vec3 Class methods=============================
