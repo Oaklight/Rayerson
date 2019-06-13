@@ -8,15 +8,17 @@ import (
 
 // Sphere has one centroid, and a radius
 type Sphere struct {
-	Center *vector.Vec3
-	Radius float64
+	Center   *vector.Vec3
+	Radius   float64
+	Material Materials
 }
 
 // NewSphere creates new Sphere obj
-func NewSphere(x, y, z, radius float64) *Sphere {
+func NewSphere(x, y, z, radius float64, m Materials) *Sphere {
 	return &Sphere{
-		Center: vector.NewVec3(x, y, z),
-		Radius: radius,
+		Center:   vector.NewVec3(x, y, z),
+		Radius:   radius,
+		Material: m,
 	}
 }
 
@@ -28,10 +30,9 @@ func (s *Sphere) Hit(r *ray.Ray, tMin, tMax float64) *Hit {
 	c := oc.Dot(oc) - s.Radius*s.Radius
 	delta := b*b - a*c
 
-	hit := &Hit{}
+	hit := &Hit{Materials: s.Material}
 
 	if delta > 0 {
-
 		if temp := (-b - math.Sqrt(delta)) / a; temp < tMax && temp > tMin {
 			hit.T = temp
 			hit.Point = r.PointAtScale(temp)
