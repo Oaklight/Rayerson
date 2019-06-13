@@ -148,6 +148,20 @@ func (v1 *Vec3) Reflect(n *Vec3) *Vec3 {
 	return v1.Sub(n.MulScalar(2 * Dot(v1, n)))
 }
 
+// Refract implements the Snell's Law
+// ratio = n_i / n_t
+func (v1 *Vec3) Refract(n *Vec3, ratio float64) *Vec3 {
+	dt := v1.Dot(n)
+	delta := 1 - ratio*ratio*(1.0-dt*dt)
+	if delta < 0 {
+		return nil
+	}
+	a := v1.Sub(n.MulScalar(dt)).MulScalar(ratio)
+	b := n.MulScalar(math.Sqrt(delta))
+	refracted := a.Sub(b)
+	return refracted
+}
+
 // =============================General function===============================
 
 // Negate the given vector
@@ -216,6 +230,12 @@ func DivScalar(v1 *Vec3, s float64) *Vec3 {
 }
 
 // Reflect based on the given surface normal
-func Reflect(v1 *Vec3, n *Vec3) *Vec3 {
+func Reflect(v1, n *Vec3) *Vec3 {
 	return v1.Reflect(n)
+}
+
+// Refract implements the Snell's Law
+// ratio = n_i / n_t
+func Refract(v1, n *Vec3, ratio float64) *Vec3 {
+	return v1.Refract(n, ratio)
 }
