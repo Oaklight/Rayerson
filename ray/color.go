@@ -12,8 +12,10 @@ type Color struct {
 }
 
 var (
-	Black = Color{0, 0, 0}
-	White = Color{255, 255, 255}
+	Black       = Color{0, 0, 0}
+	White       = Color{255, 255, 255}
+	Transparent = Color{1, 1, 1}
+	// Translucent obj should vary in channels, range [0,1)
 )
 
 // Vec2Color return a Color based on a given Vec3 object

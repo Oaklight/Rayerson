@@ -72,7 +72,7 @@ type DielectricMaterial struct {
 func NewDielectric(refIdx float64) *DielectricMaterial {
 	return &DielectricMaterial{
 		refIdx:      refIdx,
-		attenuation: ray.NewColor(1, 1, 1),
+		attenuation: &ray.Transparent,
 	}
 }
 
