@@ -3,12 +3,12 @@ package primitives
 import (
 	"math"
 	"ray"
-	"vector"
+	vec3 "vector"
 )
 
 // Sphere has one centroid, and a radius
 type Sphere struct {
-	Center   *vector.Vec3
+	Center   *vec3.Vec3
 	Radius   float64
 	Material Materials
 }
@@ -16,7 +16,7 @@ type Sphere struct {
 // NewSphere creates new Sphere obj
 func NewSphere(x, y, z, radius float64, m Materials) *Sphere {
 	return &Sphere{
-		Center:   vector.NewVec3(x, y, z),
+		Center:   &vec3.Vec3{x, y, z},
 		Radius:   radius,
 		Material: m,
 	}
@@ -26,7 +26,7 @@ func NewSphere(x, y, z, radius float64, m Materials) *Sphere {
 func (s *Sphere) Hit(r *ray.Ray, tMin, tMax float64) *Hit {
 	oc := r.Origin.Sub(s.Center)
 	a := r.Direct.Dot(r.Direct)
-	b := vector.Dot(oc, r.Direct)
+	b := vec3.Dot(oc, r.Direct)
 	c := oc.Dot(oc) - s.Radius*s.Radius
 	delta := b*b - a*c
 

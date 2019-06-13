@@ -6,12 +6,19 @@ import (
 	pm "primitives"
 	"ray"
 	"sampler"
+	vec3 "vector"
 )
 
 const (
+	// ray tracing
 	maxDepth = 50
 	tMin     = 0.001
+	finess   = 100
 	seed     = 42
+	// camera
+	nx, ny      = 800, 400
+	aspectRatio = nx / ny
+	fov         = 90
 )
 
 func check(e error, s string) {
@@ -22,40 +29,30 @@ func check(e error, s string) {
 }
 
 func main() {
-
-	nx, ny := 800, 400
-	finess := 100
+	pos := &vec3.Vec3{-2, 2, 1}
+	lookAt := &vec3.Vec3{0, 0, -1}
+	up := &vec3.Vec3{0, 1, 0}
 
 	sampler := sampler.NewSampler(nx, ny, finess, maxDepth, tMin, seed)
-	sampler.SetCamera()
-
-	// f, err := os.Create("out.ppm")
-	// defer f.Close()
-	// check(err, "Error opening file: %v\n")
-	// // http://netpbm.sourceforge.net/doc/ppm.html
-	// _, err = fmt.Fprintf(f, "P3\n%d %d\n255\n", nx, ny)
-	// check(err, "Error writting to file: %v\n")
+	sampler.SetCamera(fov, float64(nx)/float64(ny), pos, lookAt, up)
 
 	w := &pm.World{}
 	w.Add(
-		pm.NewSphere(0, 0, -1, 0.5, pm.NewLambertian(ray.NewColor(0.8, 0.3, 0.3))),
+		pm.NewSphere(0, 0, -1, 0.5, pm.NewLambertian(ray.NewColor(0.1, 0.2, 0.5))),
 		pm.NewSphere(0, -100.5, -1, 100, pm.NewLambertian(ray.NewColor(0.8, 0.8, 0))),
 		pm.NewSphere(1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.8, 0.6, 0.2), 0.3)),
-		pm.NewSphere(-1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.8, 0.8, 0.8), 0.7)),
+		pm.NewSphere(-1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.3, 0.8, 0.5), 0.8)),
+		// pm.NewSphere(-1, 0, -1, 0.5, pm.NewDielectric(1.5)),
+		// pm.NewSphere(-1, 0, -1, -0.45, pm.NewDielectric(1.5)),
 	)
 
 	sampler.SetWorldObj(w)
 
-	for j := ny - 1; j >= 0; j-- {
+	for j := 1; j < ny; j++ {
 		for i := 0; i < nx; i++ {
-
 			sampler.SamplePixel(i, j)
-			// _, err = fmt.Fprintf(f, "%d %d %d\n", ir, ig, ib)
-
-			// check(err, "Error writting to file: %v\n")
 		}
 	}
 
-	// SaveImg(imgOut, "out.png")
 	sampler.Save("out.png")
 }
