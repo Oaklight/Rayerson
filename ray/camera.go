@@ -1,21 +1,31 @@
 package ray
 
 import (
+	"math"
 	vec3 "vector"
 )
 
 // Camera defines a perspective camera model
 type Camera struct {
-	origin, lowerLeft, xAxis, yAxis *vec3.Vec3
+	origin, lowerLeft, horizontal, vertical *vec3.Vec3
 }
 
 // NewCamera Creates the default orthogonal camera model
-func NewCamera() *Camera {
+// ** lookAt is a direction
+func NewCamera(fov, aspect float64, pos, lookAt, up vec3.Vec3) *Camera {
+	theta := fov * math.Pi / 180
+	halfHeight := math.Tan(theta / 2)
+	halfWidth := aspect * halfHeight
+	w := pos.Sub(&lookAt).Normalize()
+	u := up.Cross(w).Normalize()
+	v := w.Cross(u) // normalized already
+	x := u.MulScalar(halfWidth)
+	y := v.MulScalar(halfHeight)
 	return &Camera{
-		origin:    &vec3.Zeros,
-		lowerLeft: vec3.NewVec3(-2, -1, -1),
-		xAxis:     vec3.NewVec3(4, 0, 0),
-		yAxis:     vec3.NewVec3(0, 2, 0),
+		origin:     &pos,
+		lowerLeft:  (&pos).Sub(x, y, w),
+		horizontal: x.MulScalar(2),
+		vertical:   y.MulScalar(2),
 	}
 }
 
@@ -25,8 +35,8 @@ func (c *Camera) GetRay(u, v float64) *Ray {
 		c.origin,
 		vec3.Add(
 			c.lowerLeft,
-			c.xAxis.MulScalar(u),
-			c.yAxis.MulScalar(v),
+			c.horizontal.MulScalar(u),
+			c.vertical.MulScalar(v),
 			c.origin.Negate(),
 		),
 	)
