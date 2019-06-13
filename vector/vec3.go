@@ -142,6 +142,12 @@ func (v1 *Vec3) DivScalar(s float64) *Vec3 {
 	}
 }
 
+// Reflect based on the given surface normal
+func (v1 *Vec3) Reflect(n *Vec3) *Vec3 {
+	// v - 2*dot(v, n)*n
+	return v1.Sub(n.MulScalar(2 * Dot(v1, n)))
+}
+
 // =============================General function===============================
 
 // Negate the given vector
@@ -207,4 +213,9 @@ func MulScalar(v1 *Vec3, s float64) *Vec3 {
 // DivScalar performs scalar division on v1
 func DivScalar(v1 *Vec3, s float64) *Vec3 {
 	return v1.DivScalar(s)
+}
+
+// Reflect based on the given surface normal
+func Reflect(v1 *Vec3, n *Vec3) *Vec3 {
+	return v1.Reflect(n)
 }
