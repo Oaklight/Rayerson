@@ -15,10 +15,10 @@ var (
 	Ones  = Vec3{1, 1, 1}
 )
 
-// NewVec3 creates and returns a new vector ptr with given values
-func NewVec3(e0, e1, e2 float64) *Vec3 {
-	return &Vec3{e0, e1, e2}
-}
+// // NewVec3 creates and returns a new vector ptr with given values
+// func NewVec3(e0, e1, e2 float64) *Vec3 {
+// 	return &Vec3{e0, e1, e2}
+// }
 
 // RandUnitVec3 generates random unit vector centered at origin
 func RandUnitVec3(rnd *rand.Rand) *Vec3 {
@@ -71,7 +71,7 @@ func (v1 *Vec3) Cross(v2 *Vec3) *Vec3 {
 	return &Vec3{
 		v1.Y*v2.Z - v1.Z*v2.Y,
 		v1.Z*v2.X - v1.X*v2.Z,
-		v1.X*v2.Y - v1.Z*v2.X,
+		v1.X*v2.Y - v1.Y*v2.X,
 	}
 }
 
