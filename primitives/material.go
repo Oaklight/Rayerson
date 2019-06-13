@@ -88,11 +88,10 @@ func (d *DielectricMaterial) schlick(cosine float64) float64 {
 }
 
 func (d *DielectricMaterial) Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.Ray {
-	var ratio, cosine, reflectChance float64
+	var ratio float64
 	var normalOutward *vec3.Vec3
 
-	divisor := r.Direct.Length()
-	cosine = r.Direct.Dot(hit.Normal) * d.refIdx / divisor
+	cosine := r.Direct.Dot(hit.Normal) * d.refIdx / r.Direct.Length()
 	if cosine > 0 {
 		normalOutward = hit.Normal.Negate()
 		ratio = d.refIdx
@@ -102,17 +101,11 @@ func (d *DielectricMaterial) Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.R
 		cosine = -cosine
 	}
 
-	refracted := r.Direct.Refract(normalOutward, ratio)
-
-	if refracted != nil {
-		reflectChance = d.schlick(cosine)
-	} else {
-		reflectChance = 1.0
+	if refracted := r.Direct.Refract(normalOutward, ratio); refracted != nil {
+		if rnd.Float64() > d.schlick(cosine) {
+			return ray.NewRay(hit.Point, refracted)
+		}
 	}
-	if rnd.Float64() < reflectChance {
-		reflected := r.Direct.Reflect(hit.Normal)
-		return ray.NewRay(hit.Point, reflected)
-	}
-
-	return ray.NewRay(hit.Point, refracted)
+	reflected := r.Direct.Reflect(hit.Normal)
+	return ray.NewRay(hit.Point, reflected)
 }
