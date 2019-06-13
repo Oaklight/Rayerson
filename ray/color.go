@@ -28,19 +28,11 @@ func NewColor(r, g, b float64) *Color {
 
 // =============================Vec3 Class methods=============================
 
-// RGBA for compatibility with image.Color
-func (c *Color) RGBA() color.RGBA {
-	r := uint8(math.Max(0, math.Min(255, c.R*255)))
-	g := uint8(math.Max(0, math.Min(255, c.G*255)))
-	b := uint8(math.Max(0, math.Min(255, c.B*255)))
-	return color.RGBA{r, g, b, 255}
-}
-
 // RGBA64 for compatibility with image.Color
 func (c *Color) RGBA64() color.RGBA64 {
-	r := uint16(math.Max(0, math.Min(65535, c.R*65535)))
-	g := uint16(math.Max(0, math.Min(65535, c.G*65535)))
-	b := uint16(math.Max(0, math.Min(65535, c.B*65535)))
+	r := uint16(math.Max(0, math.Min(65535, math.Sqrt(c.R)*65535)))
+	g := uint16(math.Max(0, math.Min(65535, math.Sqrt(c.G)*65535)))
+	b := uint16(math.Max(0, math.Min(65535, math.Sqrt(c.B)*65535)))
 	return color.RGBA64{r, g, b, 65535}
 }
 
