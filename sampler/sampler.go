@@ -48,7 +48,7 @@ func NewSampler(width, height, finess, maxDepth int, tMin float64, seed ...int) 
 }
 
 // SetCamera customize the camera model with given parameters
-// ** lookAt is a direction
+// ** lookAt is a point
 func (s *Sampler) SetCamera(fov, aspect, aperture float64, pos, lookAt, up *vec3.Vec3) {
 	s.cam = ray.NewCamera(fov, aspect, aperture, *pos, *lookAt, *up)
 }

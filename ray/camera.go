@@ -14,7 +14,7 @@ type Camera struct {
 }
 
 // NewCamera Creates the default orthogonal camera model
-// ** lookAt is a direction
+// ** lookAt is a point
 func NewCamera(fov, aspect, aperture float64, pos, lookAt, up vec3.Vec3) *Camera {
 	theta := fov * math.Pi / 180
 	halfHeight := math.Tan(theta / 2)

@@ -18,10 +18,12 @@ const (
 	finess   = 100
 	seed     = 42
 	// camera
-	nx, ny   = 800, 400
-	aspect   = nx / ny
-	fov      = 40
-	aperture = 2.0
+	nx, ny = 800, 400
+	aspect = nx / ny
+	// larger for wider view
+	fov = 40
+	// larger for better defocus
+	aperture = 0.1
 )
 
 func check(e error, s string) {
@@ -36,7 +38,7 @@ func main() {
 	defer profile.Start(profile.CPUProfile).Stop()
 
 	pos := &vec3.Vec3{3, 3, 2}
-	lookAt := &vec3.Vec3{0, 0, -1}
+	lookAt := &vec3.Vec3{0, 0, 1}
 	up := &vec3.Vec3{0, 1, 0}
 
 	sampler := sampler.NewSampler(nx, ny, finess, maxDepth, tMin, seed)
