@@ -7,6 +7,8 @@ import (
 	"ray"
 	"sampler"
 	vec3 "vector"
+
+	"github.com/pkg/profile"
 )
 
 const (
@@ -16,9 +18,10 @@ const (
 	finess   = 100
 	seed     = 42
 	// camera
-	nx, ny      = 800, 400
-	aspectRatio = nx / ny
-	fov         = 90
+	nx, ny   = 800, 400
+	aspect   = nx / ny
+	fov      = 40
+	aperture = 2.0
 )
 
 func check(e error, s string) {
@@ -29,21 +32,24 @@ func check(e error, s string) {
 }
 
 func main() {
-	pos := &vec3.Vec3{-2, 2, 1}
+	// CPU profiling by default
+	defer profile.Start(profile.CPUProfile).Stop()
+
+	pos := &vec3.Vec3{3, 3, 2}
 	lookAt := &vec3.Vec3{0, 0, -1}
 	up := &vec3.Vec3{0, 1, 0}
 
 	sampler := sampler.NewSampler(nx, ny, finess, maxDepth, tMin, seed)
-	sampler.SetCamera(fov, float64(nx)/float64(ny), pos, lookAt, up)
+	sampler.SetCamera(fov, aspect, aperture, pos, lookAt, up)
 
 	w := &pm.World{}
 	w.Add(
 		pm.NewSphere(0, 0, -1, 0.5, pm.NewLambertian(ray.NewColor(0.1, 0.2, 0.5))),
 		pm.NewSphere(0, -100.5, -1, 100, pm.NewLambertian(ray.NewColor(0.8, 0.8, 0))),
 		pm.NewSphere(1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.8, 0.6, 0.2), 0.3)),
-		pm.NewSphere(-1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.3, 0.8, 0.5), 0.8)),
-		// pm.NewSphere(-1, 0, -1, 0.5, pm.NewDielectric(1.5)),
-		// pm.NewSphere(-1, 0, -1, -0.45, pm.NewDielectric(1.5)),
+		// pm.NewSphere(-1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.3, 0.8, 0.5), 0.8)),
+		pm.NewSphere(-1, 0, -1, 0.5, pm.NewDielectric(1.5)),
+		pm.NewSphere(-1, 0, -1, -0.45, pm.NewDielectric(1.5)),
 	)
 
 	sampler.SetWorldObj(w)

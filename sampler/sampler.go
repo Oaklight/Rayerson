@@ -49,8 +49,8 @@ func NewSampler(width, height, finess, maxDepth int, tMin float64, seed ...int) 
 
 // SetCamera customize the camera model with given parameters
 // ** lookAt is a direction
-func (s *Sampler) SetCamera(fov, aspect float64, pos, lookAt, up *vec3.Vec3) {
-	s.cam = ray.NewCamera(fov, aspect, *pos, *lookAt, *up)
+func (s *Sampler) SetCamera(fov, aspect, aperture float64, pos, lookAt, up *vec3.Vec3) {
+	s.cam = ray.NewCamera(fov, aspect, aperture, *pos, *lookAt, *up)
 }
 
 // SetWorldObj sets up the world of hitable objects
@@ -99,7 +99,7 @@ func (s *Sampler) SamplePixel(x, y int) color.RGBA64 {
 	for rf := 0; rf < s.finess; rf++ {
 		u := (float64(x) + rand.Float64()) / float64(s.width)
 		v := (float64(y) + rand.Float64()) / float64(s.height)
-		r := s.cam.GetRay(u, v)
+		r := s.cam.GetRay(u, v, s.rnd)
 		col = col.Add(s.color4Ray(r, 0))
 	}
 	col = col.DivScalar(float64(s.finess))
