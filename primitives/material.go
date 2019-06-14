@@ -71,7 +71,8 @@ type DielectricMaterial struct {
 
 func NewDielectric(refIdx float64) *DielectricMaterial {
 	return &DielectricMaterial{
-		refIdx:      refIdx,
+		refIdx: refIdx,
+		// this can be used for translucent object
 		attenuation: &ray.Transparent,
 	}
 }

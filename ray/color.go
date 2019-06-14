@@ -12,8 +12,7 @@ type Color struct {
 }
 
 var (
-	Black       = Color{0, 0, 0}
-	White       = Color{255, 255, 255}
+	Opaque      = Color{0, 0, 0}
 	Transparent = Color{1, 1, 1}
 	// Translucent obj should vary in channels, range [0,1)
 )

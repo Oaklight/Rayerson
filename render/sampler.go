@@ -81,13 +81,12 @@ func (s *Sampler) color4Ray(r *ray.Ray, depth int) *ray.Color {
 			newColor := s.color4Ray(bounced, depth+1)
 			return hit.Color().Mul(newColor)
 		}
-		return &ray.Black
+		return &ray.Opaque
 	}
 
 	unitDirect := r.Direct.Normalize()
 	t := 0.5 * (unitDirect.Y + 1)
-	return ray.Vec2Color(vec3.Add(vec3.Ones.MulScalar(1.0-t),
-		(&vec3.Vec3{0.5, 0.7, 1}).MulScalar(t)))
+	return ray.Transparent.MulScalar(1.0 - t).Add(ray.Opaque.MulScalar(t))
 }
 
 // SamplePixel yields the color for given coordinate (x, y)
