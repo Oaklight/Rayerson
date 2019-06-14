@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"render"
 	vec3 "vector"
 )
@@ -22,6 +21,8 @@ const (
 )
 
 func main() {
+	// fmt.Println(render.RandomScene("./scene.csv"))
+
 	// // CPU profiling by default
 	// defer profile.Start(profile.CPUProfile).Stop()
 
@@ -29,9 +30,9 @@ func main() {
 	// nThread, csvPath := argParse()
 	w := render.SceneParser(csvPath)
 	// fmt.Println(w)
-	for _, each := range *w {
-		fmt.Println(each)
-	}
+	// for _, each := range *w {
+	// 	fmt.Println(each)
+	// }
 
 	pos := &vec3.Vec3{3, 3, 2}
 	lookAt := &vec3.Vec3{0, 0, 1}
@@ -39,16 +40,6 @@ func main() {
 
 	sampler := render.NewSampler(nx, ny, finess, maxDepth, tMin, seed)
 	sampler.SetCamera(fov, aspect, aperture, pos, lookAt, up)
-
-	// w := &pm.World{}
-	// w.Add(
-	// 	pm.NewSphere(0, 0, -1, 0.5, pm.NewDiffuse(ray.NewColor(0.1, 0.2, 0.5))),
-	// 	pm.NewSphere(0, -100.5, -1, 100, pm.NewDiffuse(ray.NewColor(0.8, 0.8, 0))),
-	// 	pm.NewSphere(1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.8, 0.6, 0.2), 0.3)),
-	// 	// pm.NewSphere(-1, 0, -1, 0.5, pm.NewMetallic(ray.NewColor(0.3, 0.8, 0.5), 0.8)),
-	// 	pm.NewSphere(-1, 0, -1, 0.5, pm.NewDielectric(1.5)),
-	// 	pm.NewSphere(-1, 0, -1, -0.45, pm.NewDielectric(1.5)),
-	// )
 
 	sampler.SetWorldObj(w)
 
