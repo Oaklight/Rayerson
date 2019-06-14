@@ -1,4 +1,4 @@
-package sampler
+package render
 
 import (
 	"image"

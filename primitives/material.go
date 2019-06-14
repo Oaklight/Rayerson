@@ -20,7 +20,7 @@ type DiffuseMaterial struct {
 	Albedo *ray.Color
 }
 
-func NewLambertian(color *ray.Color) *DiffuseMaterial {
+func NewDiffuse(color *ray.Color) *DiffuseMaterial {
 	return &DiffuseMaterial{color}
 }
 
