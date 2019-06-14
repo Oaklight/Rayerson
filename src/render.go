@@ -26,7 +26,7 @@ func main() {
 	// // CPU profiling by default
 	// defer profile.Start(profile.CPUProfile).Stop()
 
-	_, csvPath := render.ArgParse()
+	_, csvPath, output := render.ArgParse()
 	// nThread, csvPath := argParse()
 	w := render.SceneParser(csvPath)
 	// fmt.Println(w)
@@ -49,5 +49,5 @@ func main() {
 		}
 	}
 
-	sampler.Save("out.png")
+	sampler.Save(output)
 }
