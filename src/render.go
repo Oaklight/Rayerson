@@ -30,8 +30,8 @@ func main() {
 
 	w := render.SceneParser(csvPath)
 
-	pos := &vec3.Vec3{3, 3, 2}
-	lookAt := &vec3.Vec3{0, 0, 1}
+	pos := &vec3.Vec3{7, 7, 7}
+	lookAt := &vec3.Vec3{1, 0.2, 1}
 	up := &vec3.Vec3{0, 1, 0}
 
 	sampler := render.NewSampler(nx, ny, finess, maxDepth, tMin, seed)

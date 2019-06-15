@@ -107,7 +107,7 @@ func (s *Sampler) SamplePixel(x, y int) color.RGBA64 {
 	}
 	col = col.DivScalar(float64(s.finess))
 	rgba64 := col.RGBA64()
-	// s.ImgOut.SetRGBA64(x, s.height-y, rgba64)
+	s.ImgOut.SetRGBA64(x, s.height-y, rgba64)
 
 	return rgba64
 }
