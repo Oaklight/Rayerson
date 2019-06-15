@@ -38,8 +38,8 @@ func NewCamera(fov, aspect, aperture float64, pos, lookAt, up vec3.Vec3) *Camera
 }
 
 // GetRay returns the ray at shifted NDC (u,v)
-func (c *Camera) GetRay(u, v float64, rnd *rand.Rand) *Ray {
-	rd := randomInUnitDisc(rnd).MulScalar(c.lensRadius)
+func (c *Camera) GetRay(u, v float64) *Ray {
+	rd := randomInUnitDisc().MulScalar(c.lensRadius)
 	offset := c.u.MulScalar(rd.X).Add(c.v.MulScalar(rd.Y))
 
 	return NewRay(
@@ -55,10 +55,10 @@ func (c *Camera) GetRay(u, v float64, rnd *rand.Rand) *Ray {
 	)
 }
 
-func randomInUnitDisc(rnd *rand.Rand) (rd *vec3.Vec3) {
+func randomInUnitDisc() (rd *vec3.Vec3) {
 	commonSub := &vec3.Vec3{1, 1, 0}
 	for {
-		rd1 := &vec3.Vec3{rnd.Float64(), rnd.Float64(), 0}
+		rd1 := &vec3.Vec3{rand.Float64(), rand.Float64(), 0}
 		rd = rd1.MulScalar(2).Sub(commonSub)
 		if rd.Dot(rd) < 1.0 {
 			return

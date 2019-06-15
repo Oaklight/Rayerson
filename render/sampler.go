@@ -18,11 +18,12 @@ type Sampler struct {
 	width, height    int
 	finess, maxDepth int
 	isParallel       bool
+	nThread          int
 	tMin, tMax       float64
-	imgOut           *image.RGBA64
-	rnd              *rand.Rand
+	ImgOut           *image.RGBA64
 	cam              *ray.Camera
 	world            *pm.World
+	// rnd              *rand.Rand
 }
 
 // NewSampler creates a new sampler for rendering
@@ -34,17 +35,20 @@ func NewSampler(width, height, finess, maxDepth int, tMin float64, seed ...int) 
 		maxDepth: maxDepth,
 		tMin:     tMin,
 		tMax:     math.MaxFloat64,
-		imgOut:   image.NewRGBA64(image.Rect(0, 0, width, height)),
+		ImgOut:   image.NewRGBA64(image.Rect(0, 0, width, height)),
 	}
-	var src rand.Source
 	switch len(seed) {
 	case 0:
-		src = rand.NewSource(time.Now().UnixNano())
+		rand.Seed(time.Now().UTC().UnixNano())
 	default:
-		src = rand.NewSource(int64(seed[0]))
+		rand.Seed(int64(seed[0]))
 	}
-	s.rnd = rand.New(src)
 	return &s
+}
+
+func (s *Sampler) SetParallel(nThread int) {
+	s.isParallel = true
+	s.nThread = nThread
 }
 
 // SetCamera customize the camera model with given parameters
@@ -67,7 +71,7 @@ func (s *Sampler) Save(filePath string) error {
 	}
 	defer outWriter.Close()
 
-	err = png.Encode(outWriter, s.imgOut)
+	err = png.Encode(outWriter, s.ImgOut)
 	if err != nil {
 		return err
 	}
@@ -77,7 +81,7 @@ func (s *Sampler) Save(filePath string) error {
 func (s *Sampler) color4Ray(r *ray.Ray, depth int) *ray.Color {
 	if hit := s.world.Hit(r, s.tMin, s.tMax); hit != nil {
 
-		if bounced := hit.Materials.Bounce(r, hit, s.rnd); bounced != nil && depth < s.maxDepth {
+		if bounced := hit.Materials.Bounce(r, hit); bounced != nil && depth < s.maxDepth {
 			newColor := s.color4Ray(bounced, depth+1)
 			return hit.Color().Mul(newColor)
 		}
@@ -98,12 +102,12 @@ func (s *Sampler) SamplePixel(x, y int) color.RGBA64 {
 	for rf := 0; rf < s.finess; rf++ {
 		u := (float64(x) + rand.Float64()) / float64(s.width)
 		v := (float64(y) + rand.Float64()) / float64(s.height)
-		r := s.cam.GetRay(u, v, s.rnd)
+		r := s.cam.GetRay(u, v)
 		col = col.Add(s.color4Ray(r, 0))
 	}
 	col = col.DivScalar(float64(s.finess))
 	rgba64 := col.RGBA64()
-	s.imgOut.SetRGBA64(x, s.height-y, rgba64)
+	// s.ImgOut.SetRGBA64(x, s.height-y, rgba64)
 
 	return rgba64
 }

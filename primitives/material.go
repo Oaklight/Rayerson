@@ -9,7 +9,7 @@ import (
 
 // Materials defines the interface type of different materials
 type Materials interface {
-	Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.Ray
+	Bounce(r *ray.Ray, hit *Hit) *ray.Ray
 	Color() *ray.Color
 }
 
@@ -28,8 +28,8 @@ func (l *DiffuseMaterial) Color() *ray.Color {
 	return l.Albedo
 }
 
-func (l *DiffuseMaterial) Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.Ray {
-	scattered := hit.Normal.Add(vec3.RandUnitVec3(rnd))
+func (l *DiffuseMaterial) Bounce(r *ray.Ray, hit *Hit) *ray.Ray {
+	scattered := hit.Normal.Add(vec3.RandUnitVec3())
 	return ray.NewRay(hit.Point, scattered)
 }
 
@@ -52,10 +52,10 @@ func (m *MetallicMaterial) Color() *ray.Color {
 	return m.Albedo
 }
 
-func (m *MetallicMaterial) Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.Ray {
+func (m *MetallicMaterial) Bounce(r *ray.Ray, hit *Hit) *ray.Ray {
 	reflected := r.Direct.Reflect(hit.Normal)
 	if reflected.Dot(hit.Normal) > 0 {
-		fuzzed := reflected.Add(vec3.RandUnitVec3(rnd).MulScalar(m.Fuzz))
+		fuzzed := reflected.Add(vec3.RandUnitVec3().MulScalar(m.Fuzz))
 		return ray.NewRay(hit.Point, fuzzed)
 	}
 	return nil
@@ -88,7 +88,7 @@ func (d *DielectricMaterial) schlick(cosine float64) float64 {
 	return r0 + (1.0-r0)*math.Pow((1.0-cosine), 5)
 }
 
-func (d *DielectricMaterial) Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.Ray {
+func (d *DielectricMaterial) Bounce(r *ray.Ray, hit *Hit) *ray.Ray {
 	var ratio float64
 	var normalOutward *vec3.Vec3
 
@@ -103,7 +103,7 @@ func (d *DielectricMaterial) Bounce(r *ray.Ray, hit *Hit, rnd *rand.Rand) *ray.R
 	}
 
 	if refracted := r.Direct.Refract(normalOutward, ratio); refracted != nil {
-		if rnd.Float64() > d.schlick(cosine) {
+		if rand.Float64() > d.schlick(cosine) {
 			return ray.NewRay(hit.Point, refracted)
 		}
 	}
