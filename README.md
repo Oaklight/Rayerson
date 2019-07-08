@@ -1,6 +1,8 @@
 # Rayerson
 A Golang implementation of ray tracing rendering engine
 
+![img](assets/outComplex-1560580365410.png)
+
 ## How to run the code
 
 ```
@@ -17,6 +19,8 @@ render -p test/sceneSimple.csv outSimple.png
 All three datasets are in `./test/` folder, corresponding results are in the same folder.
 
 You may modify the code in function `RandomScene` in `./render/scene.go` to generate randomly placed sphere with varying materials.
+
+A report on Rayerson is included [here](Rayerson_a_CPU-based_ray_tracing_engine.pdf).
 
 ## Dependencies
 

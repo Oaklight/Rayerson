@@ -1,9 +1,9 @@
 # Rayerson: a CPU-based ray tracing engine
-Peng Ding [dingpeng@uchicago.edu] 
+Peng Ding [dingpeng@uchicago.edu]
 
-Rayerson is still a private Github repo, but I would like to extend it to a full-fledge rendering engine and publish it as a side project.
+**Rayerson** is a go implementation of ray tracer, originated from my final project of parallel programming course. New features will be included in the future.
 
-![img](file://C:/Users/dingp/Projects/Rayerson/assets/outComplex.png?lastModify=1560567591)
+![img](assets/outComplex.png)
 
 ## Problem Description
 When looking at an image, people usually can tell whether it is taken by a camera, or it is synthetic by some program. One of the reasons that the synthetic images look unreal is due to lighting. Lighting is the reason that people can see the world. Everything either performs as a light source, e.g. the bulbs, the sun, or serves as a "mirror", which does not necessarily need to be a perfect reflector. In most cases, light is scattered in random directions by the diffuse object. Some substances can let light pass through them, like glass and water, which are considered to be transparent. Light traveling in these substances will be refracted and the intensity may be attenuated.
@@ -134,12 +134,12 @@ You can find the related content in [Granularity](# Granularity).
 
 ## System Specs
 
-| Fields                          | Values                                                       |
-| ------------------------------- | ------------------------------------------------------------ |
-| OS Name                         | Microsoft Windows 10 Pro                                     |
+| Fields                          | Values                                                                                |
+| ------------------------------- | ------------------------------------------------------------------------------------- |
+| OS Name                         | Microsoft Windows 10 Pro                                                              |
 | Processor                       | Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz, 2112 Mhz, 4 Core(s), 8 Logical Processor(s) |
-| Installed Physical Memory (RAM) | 16.0 GB                                                      |
-| Total Virtual Memory            | 19.0 GB                                                      |
+| Installed Physical Memory (RAM) | 16.0 GB                                                                               |
+| Total Virtual Memory            | 19.0 GB                                                                               |
 
 ## Experiments and Performance
 
@@ -193,6 +193,6 @@ See you next quarter and around Crerar!
 
 ![outSimple](assets/outSimple.png)
 
-![outComplex](assets/outComplex-1560582149682.png)
+![outComplex](assets/outComplex-1560580365410.png)
 
 ![outModerate](assets/outModerate.png)
